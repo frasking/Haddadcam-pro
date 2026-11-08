@@ -568,8 +568,10 @@ fun AboutDesignerScreen(
                 }
             }
 
-            // APK Direct Download & Copy Link Card
-            val apkDownloadUrl = "https://ais-dev-kshmxoys6rdluqnrsc56nz-763652428186.europe-west2.run.app/HaddadCamPro.apk"
+            // APK Direct Download & GitHub Repository Card
+            val githubRepoUrl = "https://github.com/frasking/Haddadcam-pro"
+            val githubApkDownloadUrl = "https://github.com/frasking/Haddadcam-pro/releases/latest/download/HaddadCamPro.apk"
+            val fallbackCloudUrl = "https://ais-dev-kshmxoys6rdluqnrsc56nz-763652428186.europe-west2.run.app/HaddadCamPro.apk"
 
             Card(
                 shape = RoundedCornerShape(14.dp),
@@ -592,7 +594,7 @@ fun AboutDesignerScreen(
                     Spacer(modifier = Modifier.height(4.dp))
 
                     Text(
-                        text = "ملف تثبيت أندرويد حقيقي وكامل (حجم الملف: 29 ميغابايت)",
+                        text = "ملف تثبيت أندرويد حقيقي ودائم مدى الحياة (حجم الملف: 29 ميغابايت)",
                         color = SyrianGreenLight,
                         fontSize = 11.sp,
                         textAlign = TextAlign.Center
@@ -600,14 +602,19 @@ fun AboutDesignerScreen(
 
                     Spacer(modifier = Modifier.height(12.dp))
 
-                    // 1-Click Direct Download Button in Browser
+                    // 1. Direct Download Button from GitHub
                     Button(
                         onClick = {
                             try {
-                                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(apkDownloadUrl))
+                                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(githubApkDownloadUrl))
                                 context.startActivity(browserIntent)
                             } catch (e: Exception) {
-                                viewModel.showMessage("تعذر فتح المتصفح تلقائياً")
+                                try {
+                                    val fallbackIntent = Intent(Intent.ACTION_VIEW, Uri.parse(githubRepoUrl))
+                                    context.startActivity(fallbackIntent)
+                                } catch (ex: Exception) {
+                                    viewModel.showMessage("تعذر فتح المتصفح تلقائياً")
+                                }
                             }
                         },
                         colors = ButtonDefaults.buttonColors(
@@ -620,43 +627,77 @@ fun AboutDesignerScreen(
                             .height(48.dp)
                             .testTag("download_apk_browser_button")
                     ) {
-                        Text(text = "⬇️ تحميل ملف APK مباشرة في هاتفك", fontSize = 13.sp, fontWeight = FontWeight.Bold)
-                    }
-
-                    Spacer(modifier = Modifier.height(10.dp))
-
-                    // 1-Click Copy Link Button
-                    Button(
-                        onClick = {
-                            val clipboard = context.getSystemService(android.content.Context.CLIPBOARD_SERVICE) as? android.content.ClipboardManager
-                            val clip = android.content.ClipData.newPlainText("HaddadCamPro APK URL", apkDownloadUrl)
-                            clipboard?.setPrimaryClip(clip)
-                            viewModel.showMessage("✅ تم نسخ رابط التحميل إلى الحافظة بنجاح!")
-                        },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFF1A2B21),
-                            contentColor = SyrianGreenLight
-                        ),
-                        border = androidx.compose.foundation.BorderStroke(1.dp, SyrianGreenLight),
-                        shape = RoundedCornerShape(10.dp),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(44.dp)
-                            .testTag("copy_apk_link_button")
-                    ) {
-                        Text(text = "📋 نسخ رابط التحميل (Copy Link)", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                        Text(text = "⬇️ تحميل ملف APK المباشر من GitHub", fontSize = 13.sp, fontWeight = FontWeight.Bold)
                     }
 
                     Spacer(modifier = Modifier.height(8.dp))
 
-                    // Link text display
+                    // 2. Open GitHub Official Repository Button
+                    Button(
+                        onClick = {
+                            try {
+                                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(githubRepoUrl))
+                                context.startActivity(browserIntent)
+                            } catch (e: Exception) {
+                                viewModel.showMessage("تعذر فتح المتصفح")
+                            }
+                        },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFF16271D),
+                            contentColor = Color.White
+                        ),
+                        border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFF2E4D3A)),
+                        shape = RoundedCornerShape(10.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(44.dp)
+                    ) {
+                        Text(text = "🐙 مستودع المشروع الرسمي على GitHub", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                    }
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    // 3. 1-Click Copy Link Button (GitHub URL)
+                    Button(
+                        onClick = {
+                            val clipboard = context.getSystemService(android.content.Context.CLIPBOARD_SERVICE) as? android.content.ClipboardManager
+                            val clip = android.content.ClipData.newPlainText("HaddadCamPro GitHub URL", githubRepoUrl)
+                            clipboard?.setPrimaryClip(clip)
+                            viewModel.showMessage("✅ تم نسخ رابط مستودع GitHub إلى الحافظة بنجاح!")
+                        },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFF101B14),
+                            contentColor = SyrianGreenLight
+                        ),
+                        border = androidx.compose.foundation.BorderStroke(1.dp, SyrianGreenLight.copy(alpha = 0.5f)),
+                        shape = RoundedCornerShape(10.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(40.dp)
+                            .testTag("copy_apk_link_button")
+                    ) {
+                        Text(text = "📋 نسخ رابط GitHub (Copy Link)", fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                    }
+
+                    Spacer(modifier = Modifier.height(10.dp))
+
+                    // GitHub Link text display
                     Text(
-                        text = apkDownloadUrl,
-                        color = Color(0xFF90A499),
-                        fontSize = 10.sp,
+                        text = githubRepoUrl,
+                        color = SyrianGreenLight,
+                        fontSize = 11.sp,
                         fontFamily = FontFamily.Monospace,
                         textAlign = TextAlign.Center,
-                        lineHeight = 14.sp
+                        fontWeight = FontWeight.Bold
+                    )
+
+                    Spacer(modifier = Modifier.height(2.dp))
+
+                    Text(
+                        text = "المستودع الرسمي للمصمم فراس باسم حداد • رابط دائم لا ينتهي مدى الحياة",
+                        color = Color(0xFF8BA294),
+                        fontSize = 10.sp,
+                        textAlign = TextAlign.Center
                     )
                 }
             }
@@ -668,7 +709,7 @@ fun AboutDesignerScreen(
                         action = Intent.ACTION_SEND
                         putExtra(
                             Intent.EXTRA_TEXT,
-                            "تطبيق «كام حداد برو» - المخصص والتشفير الآمن لمراقبة الكاميرات (IPTV و WiFi والسلكية) من تصميم فراس باسم حداد.\nرابط التحميل المباشر للـ APK:\n$apkDownloadUrl"
+                            "تطبيق «كام حداد برو» - المخصص والتشفير الآمن لمراقبة الكاميرات (IPTV و WiFi والسلكية) من تصميم فراس باسم حداد.\nالمستودع الرسمي ورابط التحميل المباشر من GitHub:\n$githubRepoUrl"
                         )
                         type = "text/plain"
                     }
