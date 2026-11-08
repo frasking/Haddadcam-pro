@@ -1,0 +1,6 @@
+{
+  "name": "كام حداد برو",
+  "description": "تطبيق مراقبة كاميرات متطور ومفتوح المصدر يدعم IPTV وكاميرات WiFi والسلكية مع تشفير آمن وواجهة متقدمة - تصميم فراس باسم حداد",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
