@@ -51,5 +51,7 @@
 
 ---
 
-## 📥 تثبيت التطبيق
-يمكنك تحميل ملف الـ APK المباشر من قسم **Releases** في هذا المستودع وتثبيته مباشرة على أي هاتف أندرويد.
+## 📥 تثبيت وتحميل التطبيق المباشر
+* 🚀 **رابط التحميل المباشر لملف الـ APK:** [تحميل HaddadCamPro.apk مباشرة](https://frasking.github.io/Haddadcam-pro/HaddadCamPro.apk)
+* 🌐 **الموقع الرسمي للتطبيق:** [https://frasking.github.io/Haddadcam-pro/](https://frasking.github.io/Haddadcam-pro/)
+* 📦 **مستودع الكود المصدري:** [https://github.com/frasking/Haddadcam-pro](https://github.com/frasking/Haddadcam-pro)
