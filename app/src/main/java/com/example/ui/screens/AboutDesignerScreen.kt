@@ -602,19 +602,16 @@ fun AboutDesignerScreen(
 
                     Spacer(modifier = Modifier.height(12.dp))
 
-                    // 1. Direct 1-Click APK Download Button
+                    // 1. Direct 1-Click APK Download Button (المطلوب في الصورة تماماً)
                     Button(
                         onClick = {
                             try {
-                                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(directApkDownloadUrl))
+                                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(directApkDownloadUrl)).apply {
+                                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                }
                                 context.startActivity(browserIntent)
                             } catch (e: Exception) {
-                                try {
-                                    val fallbackIntent = Intent(Intent.ACTION_VIEW, Uri.parse(githubPagesWebsiteUrl))
-                                    context.startActivity(fallbackIntent)
-                                } catch (ex: Exception) {
-                                    viewModel.showMessage("تعذر فتح المتصفح تلقائياً")
-                                }
+                                viewModel.showMessage("تعذر فتح الرابط")
                             }
                         },
                         colors = ButtonDefaults.buttonColors(
@@ -627,7 +624,18 @@ fun AboutDesignerScreen(
                             .height(48.dp)
                             .testTag("download_apk_browser_button")
                     ) {
-                        Text(text = "⬇️ تحميل ملف APK المباشر الآن", fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            Text(
+                                text = "تحميل ملف APK المباشر من GitHub",
+                                fontSize = 13.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Spacer(modifier = Modifier.width(6.dp))
+                            Text(text = "⬇️", fontSize = 14.sp)
+                        }
                     }
 
                     Spacer(modifier = Modifier.height(8.dp))
